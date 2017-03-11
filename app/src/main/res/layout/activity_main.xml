@@ -7,13 +7,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
+
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="lubimybzykac.pl.monika_lubimybzykac.MainActivity">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <ImageView
             android:id="@+id/imageView"
@@ -32,12 +34,12 @@
             android:layout_width="200px"
             android:layout_height="200px"
             android:text="ZOBACZ GALERIĘ"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="49dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginEnd="50dp"
             android:layout_alignTop="@+id/imageView"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_marginLeft="43dp"
-            android:layout_marginStart="43dp" />
+            android:layout_alignRight="@+id/textView1"
+            android:layout_alignEnd="@+id/textView1" />
 
         <TextView
             android:layout_width="match_parent"

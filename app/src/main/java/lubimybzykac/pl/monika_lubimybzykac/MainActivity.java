@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     final int PERMISSION_SEND_SMS = 1;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         startService(new Intent(getBaseContext(), BootCompleteReceiver.class));
         setContentView(R.layout.activity_main);
-
+        AppInstallTime();
         Button button= (Button)findViewById(R.id.imageButton);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -195,6 +197,18 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("makeScut",1);
         editor.apply();
+    }
+
+    //zapis czasu instalacji
+    public void AppInstallTime(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isAppInstallTime = preferences.contains("appinstalltime");
+        if(!isAppInstallTime){
+            Calendar cal = Calendar.getInstance();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong("appinstalltime",cal.getTimeInMillis());
+            editor.apply();
+        }
     }
 
 

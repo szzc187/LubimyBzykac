@@ -13,6 +13,8 @@ public interface DataIn {
     int low = 1; //przedział losowania niska
     int high = 5; // przedział losowania wysoka
 
+    //+ 10 sekund dla pewności
+    long tenSecond = 10000;
 
 
 
