@@ -19,7 +19,7 @@ public class Gallery extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-                Intent i = new Intent(getApplicationContext(),FullImageActivity.class);
+                Intent i = new Intent(getApplicationContext(),TouchActivity.class);
                 i.putExtra("id",position);
                 startActivity(i);
             }

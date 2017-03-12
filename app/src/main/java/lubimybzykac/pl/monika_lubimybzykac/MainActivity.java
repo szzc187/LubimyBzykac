@@ -138,21 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.item1:
                 ktoryElement = "pierwszy";
-                break;
-            case R.id.item2:
-                ktoryElement = "drugi";
-                break;
-            case R.id.item3:
-                ktoryElement = "trzeci";
-                break;
-            case R.id.item4:
-                ktoryElement = "czwarty";
-                break;
-            case R.id.item5:
-                ktoryElement = "piąty";
-                break;
-            case R.id.item6:
-                ktoryElement = "szósty";
                 finish();
                 System.exit(0);
                 break;
