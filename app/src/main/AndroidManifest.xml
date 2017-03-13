@@ -3,7 +3,7 @@
     package="lubimybzykac.pl.monika_lubimybzykac">
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="10"
         android:targetSdkVersion="25" />
 
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -30,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,12 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".Gallery" />
-
-        <activity android:name=".TouchActivity"/>
-
-
+        <activity android:name=".activity_daveimage"></activity>
 
         <receiver android:name=".BootCompleteReceiver">
             <intent-filter>
@@ -54,7 +49,6 @@
         </receiver>
 
         <service android:name=".SmsAlarm" />
-
 
 
     </application>

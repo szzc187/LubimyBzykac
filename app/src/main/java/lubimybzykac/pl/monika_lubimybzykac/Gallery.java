@@ -15,11 +15,11 @@ public class Gallery extends AppCompatActivity {
         setContentView(R.layout.activity_gallery);
 
         GridView gridView = (GridView) findViewById(R.id.gridView);
-        gridView.setAdapter(new ImageAdapter(this));
+        gridView.setAdapter(new MyAdapter(this));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-                Intent i = new Intent(getApplicationContext(),TouchActivity.class);
+                Intent i = new Intent(getApplicationContext(),activity_daveimage.class);
                 i.putExtra("id",position);
                 startActivity(i);
             }
