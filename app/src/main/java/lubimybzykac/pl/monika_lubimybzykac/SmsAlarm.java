@@ -33,8 +33,7 @@ public class SmsAlarm extends IntentService {
 //pierwszy SMS, tylko raz
             if(!isFirstSms) {
                 Calendar cal4 = Calendar.getInstance();
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(DataIn.number, null, DataIn.message, null, null);
+                SendSms();
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt("FirstSms",1);
                 editor.putLong("lastSmsTime",cal4.getTimeInMillis());
@@ -44,38 +43,46 @@ public class SmsAlarm extends IntentService {
 //wysłij sms jeśli był ustawiony alarm
             if(isWasAlarmSet) {
                 Calendar cal2 = Calendar.getInstance();
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(DataIn.number, null, DataIn.message, null, null);
+                SendSms();
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putLong("lastSmsTime",cal2.getTimeInMillis());
                 editor.apply();
+                Log.d("isWasAlarmSet", "SMS - isWasAlarmSet");
             }
+
 //Tylko po instalacji czy nie było za dużo restartów po których nie szły smsy
             Calendar cal1 = Calendar.getInstance();
             boolean isafterInstallRestarts = preferences.contains("afterInstallRestarts");
             boolean islastSmsTime = preferences.contains("lastSmsTime");
             long appInstallTime = preferences.getLong("appinstalltime",0);
             if(cal1.getTimeInMillis() - appInstallTime > DataIn.firstDelay*DataIn.high + DataIn.tenSecond && !isafterInstallRestarts && !islastSmsTime){
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(DataIn.number, null, DataIn.message, null, null);
+                try {
+                    Thread.sleep(15000);
+                } catch (Exception e) {
+                }
+                SendSms();
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt("afterInstallRestarts", 1);
                 editor.putLong("lastSmsTime",cal1.getTimeInMillis());
                 editor.apply();
+                Log.d("restartOnlySms", "SMS - restartOnlySms");
             }
 //Systauacji kiedy restart jest przed czasem ale już kiedyś był wysłany sms
             Calendar cal3 = Calendar.getInstance();
             if(islastSmsTime){
                 long lastSmsTime = preferences.getLong("lastSmsTime",0);
                 if(cal3.getTimeInMillis()-lastSmsTime > DataIn.firstDelay*DataIn.high + DataIn.tenSecond){
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(DataIn.number, null, DataIn.message, null, null);
+                    try {
+                        Thread.sleep(15000);
+                    } catch (Exception e) {
+                    }
+                    SendSms();
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putLong("lastSmsTime",cal3.getTimeInMillis());
                     editor.apply();
+                    Log.d("iflastSms", "SMS - iflastSms");
                 }
             }
-
 
 //Ustawianie alarmu
             RandomInt randomInt = new RandomInt();
@@ -102,6 +109,11 @@ public class SmsAlarm extends IntentService {
             editor.putInt("WasAlarmSet", 1);
             editor.apply();
 
-            }
         }
     }
+
+    public void SendSms(){
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(DataIn.number, null, DataIn.message, null, null);
+    }
+}
