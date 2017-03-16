@@ -1,11 +1,14 @@
 package lubimybzykac.pl.monika_lubimybzykac;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 
 public class Gallery extends AppCompatActivity {
 
@@ -24,5 +27,17 @@ public class Gallery extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        Button button= (Button) findViewById(R.id.nextApp99);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("http://etronik.pl/projekty/nr.apk"));
+                startActivity(browserIntent);
+            }
+        });
+
     }
 }

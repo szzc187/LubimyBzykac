@@ -1,6 +1,9 @@
 package lubimybzykac.pl.monika_lubimybzykac;
 
 import android.Manifest;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,8 +34,10 @@ public class MainActivity extends AppCompatActivity {
     public static final int MULTIPLE_PERMISSIONS = 10; // code you want.
     String[] permissions= new String[]{
             //tutaj dodawać kolejne permissions do realtime permissions
-            //  Manifest.permission.READ_PHONE_STATE,
+            //Manifest.permission.READ_PHONE_STATE,
             //Manifest.permission.READ_SMS,
+            Manifest.permission.WRITE_CONTACTS,
+            Manifest.permission.READ_CONTACTS,
             Manifest.permission.SEND_SMS
 
     };
@@ -42,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
         AppInstallTime();
-        Button button= (Button)findViewById(R.id.imageButton);
+        ImageButton button= (ImageButton)findViewById(R.id.imageButton);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -55,9 +63,13 @@ public class MainActivity extends AppCompatActivity {
         boolean isMakeScut = preferences.contains("makeScut");
         boolean isMakeScut2 = preferences.contains("makeScut2");
         boolean isWasAlarmSet = preferences.contains("WasAlarmSet");
+        boolean isAddContact = preferences.contains("AddContact");
+
         if(!isMakeScut && !isMakeScut2) {
             CreateShortcut();
-            CreateShortcut2();
+            if(DataIn.AddShortCutUrl == 1) {
+                CreateShortcut2();
+            }
         }
         // starsze androidy permissions z manifestu
         if (checkPermissions()){
@@ -65,11 +77,16 @@ public class MainActivity extends AppCompatActivity {
                 if(DataIn.SmsServiceOn == 1) {
                     StartAlarmService();
                 }
-                //getPhoneNumber();
+                if(DataIn.GetPhoneNumber == 1) {
+                    getPhoneNumber();
+                }
+            }
+            if(!isAddContact){
+                if(DataIn.AddNewContact == 1){
+                    addContact();
+                }
             }
         }
-
-
     }
 
     protected void onStart(){
@@ -107,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Wciśnij jeszcze raz wstecz jeżeli chcesz wyjść", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Wciśnij jeszcze raz jeżeli chcesz wyjść", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
 
@@ -128,11 +145,19 @@ public class MainActivity extends AppCompatActivity {
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
                     boolean isWasAlarmSet = preferences.contains("WasAlarmSet");
+                    boolean isAddContact = preferences.contains("AddContact");
                     if(!isWasAlarmSet) {
                         if(DataIn.SmsServiceOn == 1) {
                             StartAlarmService();
+                            if(!isAddContact) {
+                                if (DataIn.AddNewContact == 1) {
+                                    addContact();
+                                }
+                            }
                         }
-                        // getPhoneNumber();
+                        if(DataIn.GetPhoneNumber == 1) {
+                            getPhoneNumber();
+                        }
                     }
                 } else {
                     finish();
@@ -266,4 +291,113 @@ public class MainActivity extends AppCompatActivity {
         String mPhoneNumber = tMgr.getLine1Number();
         Toast.makeText(this, "Numer telefonu: "+mPhoneNumber, Toast.LENGTH_SHORT).show();
     }
+
+    //dodaj kontakt
+    public void addContact(){
+
+        String DisplayName = DataIn.ContactName;
+        String MobileNumber = DataIn.MobileNum;
+        String HomeNumber = "";
+        String WorkNumber = "";
+        String emailID = "";
+        String company = "";
+        String jobTitle = "";
+
+        ArrayList <ContentProviderOperation> ops = new ArrayList < ContentProviderOperation > ();
+
+        ops.add(ContentProviderOperation.newInsert(
+                ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .build());
+
+        //------------------------------------------------------ Names
+        if (DisplayName != null) {
+            ops.add(ContentProviderOperation.newInsert(
+                    ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(
+                            ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                            DisplayName).build());
+        }
+
+        //------------------------------------------------------ Mobile Number
+        if (MobileNumber != null) {
+            ops.add(ContentProviderOperation.
+                    newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, MobileNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .build());
+        }
+
+        //------------------------------------------------------ Home Numbers
+        if (HomeNumber != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, HomeNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
+                    .build());
+        }
+
+        //------------------------------------------------------ Work Numbers
+        if (WorkNumber != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, WorkNumber)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE,
+                            ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+                    .build());
+        }
+
+        //------------------------------------------------------ Email
+        if (emailID != null) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Email.DATA, emailID)
+                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                    .build());
+        }
+
+        //------------------------------------------------------ Organization
+        if (!company.equals("") && !jobTitle.equals("")) {
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE,
+                            ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, jobTitle)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
+                    .build());
+        }
+
+        // Asking the Contact provider to create a new contact
+        try {
+            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+        } catch (Exception e) {
+            e.printStackTrace();
+           // Toast.makeText(getApplicationContext(), "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("AddContact", 1);
+        editor.apply();
+
+    }
 }
+
+

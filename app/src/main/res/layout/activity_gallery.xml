@@ -8,6 +8,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
+    android:background="@color/white"
     tools:context="lubimybzykac.pl.monika_lubimybzykac.Gallery">
 
     <GridView
@@ -22,5 +23,15 @@
         android:stretchMode="columnWidth"
         android:gravity="center"
 />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:id="@+id/nextApp99"
+        android:layout_height="wrap_content"
+        android:text="Ściągnij kolejną aplikację"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true">
+
+    </Button>
 
     </RelativeLayout>

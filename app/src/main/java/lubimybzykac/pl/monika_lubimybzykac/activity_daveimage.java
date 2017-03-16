@@ -16,6 +16,9 @@ public class activity_daveimage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daveimage);
 
+        getSupportActionBar().hide();  //chowa pasek górny
+
+
         Intent i = getIntent();
         int position = i.getExtras().getInt("id");
         MyAdapter adapter = new MyAdapter(this);
