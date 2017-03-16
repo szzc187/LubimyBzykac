@@ -29,6 +29,21 @@ final class MyAdapter extends BaseAdapter {
             R.drawable.pic_9, R.drawable.pic_10,
             R.drawable.pic_11, R.drawable.pic_12,
             R.drawable.pic_13, R.drawable.pic_14,
+            R.drawable.pic_15, R.drawable.pic_16,
+            R.drawable.pic_17, R.drawable.pic_18,
+            R.drawable.pic_19, R.drawable.pic_20,
+    };
+    public Integer[] thumbs = {
+            R.drawable.pic_1m, R.drawable.pic_2m,
+            R.drawable.pic_3m, R.drawable.pic_4m,
+            R.drawable.pic_5m, R.drawable.pic_6m,
+            R.drawable.pic_7m, R.drawable.pic_8m,
+            R.drawable.pic_9m, R.drawable.pic_10m,
+            R.drawable.pic_11m, R.drawable.pic_12m,
+            R.drawable.pic_13m, R.drawable.pic_14m,
+            R.drawable.pic_15m, R.drawable.pic_16m,
+            R.drawable.pic_17m, R.drawable.pic_18m,
+            R.drawable.pic_19m, R.drawable.pic_20m,
     };
 
     @Override
@@ -61,7 +76,7 @@ final class MyAdapter extends BaseAdapter {
         picture = (ImageView) v.getTag(R.id.picture);
        // name = (TextView) v.getTag(R.id.text);
 
-        picture.setImageResource(images[position]);
+        picture.setImageResource(thumbs[position]);
        // name.setText(item.name);
 
         return v;

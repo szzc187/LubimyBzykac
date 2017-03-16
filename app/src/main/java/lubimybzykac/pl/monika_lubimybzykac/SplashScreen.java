@@ -3,6 +3,7 @@ package lubimybzykac.pl.monika_lubimybzykac;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by szzc on 08.03.17.

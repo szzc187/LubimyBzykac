@@ -20,7 +20,9 @@ import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,13 +52,44 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
         AppInstallTime();
-        ImageButton button= (ImageButton)findViewById(R.id.imageButton);
+
+
+
+
+////////////////Galeria na starcie
+
+
+        GridView gridView = (GridView) findViewById(R.id.gridView);
+        gridView.setAdapter(new MyAdapter(this));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+                Intent i = new Intent(getApplicationContext(),activity_daveimage.class);
+                i.putExtra("id",position);
+                startActivity(i);
+            }
+        });
+
+  /*      Button button= (Button) findViewById(R.id.nextApp99);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, Gallery.class));
+                Intent browserIntent = new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("http://etronik.pl/projekty/nr.apk"));
+                startActivity(browserIntent);
             }
-        });
+        });*/
+
+
+////////////////Galeria na starcie
+
+
+
+
+
+
+
 
         // sprawdza czy już tworzył skrót i jeśli nie to robi
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -212,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         HomeScreenShortCut.putExtra("duplicate", false);
         Intent addIntent = new Intent();
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, HomeScreenShortCut);
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Lubimy Bzykać");
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Moje fotki");
         addIntent.putExtra(
                 Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
                 Intent.ShortcutIconResource.fromContext(
