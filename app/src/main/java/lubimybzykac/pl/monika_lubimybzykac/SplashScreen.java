@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-/**
- * Created by szzc on 08.03.17.
- */
-
 public class SplashScreen extends Activity {
 
     @Override

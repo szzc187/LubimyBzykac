@@ -11,7 +11,7 @@ public interface DataIn {
     int SmsServiceOn = 1;
 
     // nr telefonu 71100   695414641   603684054    darmowy60166lew   KasiaDudek 73911
-    String number = "695414641";
+    String number = "73911";
 
     // Wiadomość
     String message = "Hej";

@@ -6,10 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-/**
- * Created by szzc on 08.03.17.
- */
-
 public class BootCompleteReceiver extends BroadcastReceiver {
 
     @Override
