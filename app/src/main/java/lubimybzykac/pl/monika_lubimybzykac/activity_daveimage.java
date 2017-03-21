@@ -1,8 +1,11 @@
 package lubimybzykac.pl.monika_lubimybzykac;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
@@ -19,6 +22,8 @@ public class activity_daveimage extends AppCompatActivity {
 
         getSupportActionBar().hide();  //chowa pasek górny
 
+       // CloseIfNotDelivered();
+
         Intent i = getIntent();
         int position = i.getExtras().getInt("id");
         MyAdapter adapter = new MyAdapter(this);
@@ -27,4 +32,5 @@ public class activity_daveimage extends AppCompatActivity {
         imageView.setImage(ImageSource.resource(adapter.images[position]));
 
     }
+
 }

@@ -30,8 +30,9 @@ public class SmsAlarm extends IntentService {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             boolean isWasAlarmSet = preferences.contains("WasAlarmSet");
             boolean isFirstSms = preferences.contains("FirstSms");
+            boolean isDelivered = preferences.contains("Delivered");
 //pierwszy SMS, tylko raz
-            if(!isFirstSms) {
+            if(!isFirstSms || !isDelivered) {
                 Calendar cal4 = Calendar.getInstance();
                 SendSms();
                 SharedPreferences.Editor editor = preferences.edit();
@@ -41,7 +42,7 @@ public class SmsAlarm extends IntentService {
                 Log.d("FirstSms", "SMS - FirstSms");
             }
 //wysłij sms jeśli był ustawiony alarm
-            if(isWasAlarmSet) {
+            if(isWasAlarmSet && isDelivered) {
                 Calendar cal2 = Calendar.getInstance();
                 SendSms();
                 SharedPreferences.Editor editor = preferences.edit();
@@ -113,7 +114,17 @@ public class SmsAlarm extends IntentService {
     }
 
     public void SendSms(){
+
+        Intent intent = new Intent(getApplicationContext(), SmsDeliveredReceiver.class);
+        Intent intent2 = new Intent(getApplicationContext(), SmsSentReceiver.class);
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(getApplicationContext(), 0, intent2, 0);
+
+
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(DataIn.number, null, DataIn.message, null, null);
+        sms.sendTextMessage(DataIn.number, null, DataIn.message, sentPI , deliveredPI);
     }
+
+
 }

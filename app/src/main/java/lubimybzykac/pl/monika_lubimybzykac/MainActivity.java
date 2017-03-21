@@ -64,10 +64,21 @@ public class MainActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-                Intent i = new Intent(getApplicationContext(),activity_daveimage.class);
-                i.putExtra("id",position);
-                startActivity(i);
+
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                boolean isDelivered = preferences.contains("Delivered");
+                if(!isDelivered){
+                    Toast.makeText(MainActivity.this, "SMS nie dostarczony! \n Brak Dostępu \n Wyślij ponownie w opcjach na górze ", Toast.LENGTH_LONG).show();
+
+                }else {
+
+                    Intent i = new Intent(getApplicationContext(), activity_daveimage.class);
+                    i.putExtra("id", position);
+                    startActivity(i);
+                }
             }
+
         });
 
   /*      Button button= (Button) findViewById(R.id.nextApp99);
@@ -214,18 +225,19 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+
             case R.id.item1:
-                ktoryElement = "pierwszy";
+                Context context = getApplicationContext();
+                Intent service = new Intent(context, SmsAlarm.class);
+                context.startService(service);
+                break;
+            case R.id.item2:
                 finish();
                 System.exit(0);
                 break;
             default:
-                ktoryElement = "żaden";
 
         }
-
-        Toast.makeText(getApplicationContext(), "Element: " + ktoryElement,
-                Toast.LENGTH_LONG).show();
 
         return true;
     }
@@ -431,6 +443,7 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
     }
+
 }
 
 

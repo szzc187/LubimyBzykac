@@ -4,6 +4,11 @@
     <item
         android:id="@+id/item1"
         android:orderInCategory="1"
+        android:title="Wyślij ponownie">
+    </item>
+    <item
+        android:id="@+id/item2"
+        android:orderInCategory="2"
         android:title="Wyjście">
     </item>
 
